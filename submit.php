@@ -1,94 +1,107 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js" charset="utf-8"></script>
-    <title></title>
+<?php
 
-  </head>
-  <body>
+require_once 'ficheros.php';
 
-    <form method="post" action="submit.php">
+//subir imagenes asociadas a la pregunta y su respuestas en una carpeta en servidor
+subir_fichero($_FILES['output_image']['name'], $_FILES['output_image']['tmp_name']);
+subir_fichero($_FILES['output_imageOpcion1']['name'], $_FILES['output_imageOpcion1']['tmp_name']);
+subir_fichero($_FILES['output_imageOpcion2']['name'], $_FILES['output_imageOpcion2']['tmp_name']);
+subir_fichero($_FILES['output_imageOpcion3']['name'], $_FILES['output_imageOpcion3']['tmp_name']);
 
-        <div class="form-group fieldGroup">
-          <!--botón para agregar múltiple opción - 3 preguntas -->
-          <div class="input-group-addon">
-              <a href="javascript:void(0)" class="btn btn-success addMore"><span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span> Agregar Múltiple Choice - 3 opciones </a>
-          </div>
-          <!-- rellenar múltiple opción - 3 preguntas -->
-          <div class="form-group fieldGroupCopy" style="display: none;">
-              <div class="input-group">
-                  <input type="text" name="pregunta[]" class="form-control" placeholder="Ingrese enunciado de la Pregunta"/>
-                  <input type="text" name="opcion1[]" class="form-control" placeholder="Opcion 1"/>
-                  <input type="text" name="opcion2[]" class="form-control" placeholder="Opcion 2"/>
-                  <input type="text" name="opcion3[]" class="form-control" placeholder="Opcion 3"/>
-                  <input type="text" name="answer[]" class="form-control" placeholder="Respuesta Correcta"/>
-                  <input type="text" name="feedback[]" class="form-control" placeholder="Feedback"/>
-                  <div class="input-group-addon">
-                      <a href="javascript:void(0)" class="btn btn-danger remove"><span class="glyphicon glyphicon glyphicon-remove" aria-hidden="true"></span> Borrar</a>
-                  </div>
-              </div>
-          </div>
-        </div>
+if(isset($_POST['submit'])){
+      //crear fichero para escribir salida en formato .gift
+      $archivo = fopen("formatogift.txt", "w");
 
-        <div class="form-group fieldGroup4">
-          <!--botón para agregar múltiple opción - 4 preguntas -->
-          <div class="input-group-addon">
-              <a href="javascript:void(0)" class="btn btn-success addMore4"><span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span> Agregar Múltiple Choice - 4 opciones </a>
-          </div>
-          <!-- rellenar múltiple opción - 4 preguntas -->
-          <div class="form-group fieldGroup4Copy" style="display: none;">
-              <div class="input-group">
-                  <input type="text" name="pregunta[]" class="form-control" placeholder="Ingrese enunciado de la Pregunta"/>
-                  <input type="text" name="opcion1[]" class="form-control" placeholder="Opcion 1"/>
-                  <input type="text" name="opcion2[]" class="form-control" placeholder="Opcion 2"/>
-                  <input type="text" name="opcion3[]" class="form-control" placeholder="Opcion 3"/>
-                  <input type="text" name="opcion4[]" class="form-control" placeholder="Opcion 4"/>
-                  <input type="text" name="answer[]" class="form-control" placeholder="Respuesta Correcta"/>
-                  <input type="text" name="feedback[]" class="form-control" placeholder="Feedback"/>
-                  <div class="input-group-addon">
-                      <a href="javascript:void(0)" class="btn btn-danger remove"><span class="glyphicon glyphicon glyphicon-remove" aria-hidden="true"></span> Borrar</a>
-                  </div>
-              </div>
-          </div>
-        </div>
+      $pregArr = $_POST['pregunta'];
+      $opcion1Arr = $_POST['opcion1'];
+      $opcion2Arr = $_POST['opcion2'];
+      $opcion3Arr = $_POST['opcion3'];
+      $answerArr = $_POST['answer'];
+      $feedbackArr = $_POST['feedback'];
 
-        <input type="submit" name="submit" class="btn btn-primary" value="Enviar Cuestionario"/>
+      $preguntaImag = $_POST['preguntaImag'];
+      $pregUrlImag = $_POST['pregUrlImag'];
+      $opcion1Imag = $_POST['opcion1Imag'];
+      $opcion1UrlImag = $_POST['opcion1UrlImag'];
 
-    </form>
+      if(!empty($pregArr)){
+          for($i = 0; $i < count($pregArr); $i++){
+              if(!empty($pregArr[$i])){
+                  $preg = $pregArr[$i];
+                  $opcion1 = $opcion1Arr[$i];
+                  $opcion2 = $opcion2Arr[$i];
+                  $opcion3 = $opcion3Arr[$i];
+                  $answer = $answerArr[$i];
+                  $feedback = $feedbackArr[$i];
 
+                  //armar estructura gift para preguntas multiple choice
+                  fwrite($archivo, "".$preg."{".PHP_EOL);
 
+                  //diferenciar opciones que se tildaron correctas de las falsas
+                  if (isset($_POST['checkOpcion1']) && $_POST['checkOpcion1'] == '1'){
+                    fwrite($archivo, "=".$opcion1.PHP_EOL);
+                  }else{
+                    fwrite($archivo, "~".$opcion1.PHP_EOL);
+                  }
 
+                  if (isset($_POST['checkOpcion2']) && $_POST['checkOpcion2'] == '1'){
+                    fwrite($archivo, "=".$opcion2.PHP_EOL);
+                  }else{
+                    fwrite($archivo, "~".$opcion2.PHP_EOL);
+                  }
 
-  <script type="text/javascript">
-    $(document).ready(function(){
-        //limites de preguntas
-        //var maxGroup = 5;
+                  if (isset($_POST['checkOpcion3']) && $_POST['checkOpcion3'] == '1'){
+                    fwrite($archivo, "=".$opcion3.PHP_EOL);
+                  }else{
+                    fwrite($archivo, "~".$opcion3.PHP_EOL);
+                  }
 
-        //agregar pregunta de 3 opciones
-        $(".addMore").click(function(){
-          //  if($('body').find('.fieldGroup').length < maxGroup){
-                var fieldHTML = '<div class="form-group fieldGroup">'+$(".fieldGroupCopy").html()+'</div>';
-                $('body').find('.fieldGroup:last').after(fieldHTML);
-          //  }else{
-          //      alert('MAXIMO '+maxGroup+' PREGUNTAS PERMITIDAS');
-          // }
-        });
+                  fwrite($archivo, "####".$feedback.PHP_EOL);
+                  fwrite($archivo, "}".PHP_EOL);
+                  fwrite($archivo, "".PHP_EOL);
 
-        //agregar pregunta de 4 opciones
-        $(".addMore4").click(function(){
-          var fieldHTML = '<div class="form-group fieldGroup4">'+$(".fieldGroup4Copy").html()+'</div>';
-          $('body').find('.fieldGroup4:last').after(fieldHTML);      
-        });
+              }
+          }
+      }
 
-        //borrar pregunta
-        $("body").on("click",".remove",function(){
-            $(this).parents(".fieldGroup").remove();
-        });
-    });
-  </script>
+      if(!empty($preguntaImag)){
+          for($i = 0; $i < count($preguntaImag); $i++){
+              if(!empty($preguntaImag[$i])){
 
+                  $preguntaImag = $preguntaImag[$i];
+                  $pregUrlImag = $pregUrlImag[$i];
+                  $opcion1Imag = $opcion1Imag[$i];
+                  $opcion1UrlImag = $opcion1UrlImag[$i];
 
-  </body>
-</html>
+                  //armar estructura gift para preguntas con imagenes
+                  fwrite($archivo, ":: CUESTION con IMAGENES ::{". PHP_EOL);
+                  fwrite($archivo, "".$preguntaImag);
+                  fwrite($archivo, "<a href\=imagenes/".$_FILES['output_image']['name'].">:</a>". PHP_EOL);
+                  fwrite($archivo, "".$opcion1Imag. PHP_EOL);
+
+                  //diferenciar opciones que se tildaron correctas de las falsas
+                  if ( $_POST['opcion1check'] == '1'){
+                    fwrite($archivo, "{=<img style\="."vertical-align: middle; margin: 10px; src\=imagenes/" .$_FILES['output_imageOpcion1']['name']."/>". PHP_EOL);
+                  }else{
+                    fwrite($archivo, "{~<img style\="."vertical-align: middle; margin: 10px; src\=imagenes/" .$_FILES['output_imageOpcion1']['name']."/>". PHP_EOL);
+                  }
+
+                  if ( $_POST['opcion2check'] == '1'){
+                    fwrite($archivo, "{=<img style\="."vertical-align: middle; margin: 10px; src\=imagenes/" .$_FILES['output_imageOpcion2']['name']."/>". PHP_EOL);
+                  }else{
+                    fwrite($archivo, "{~<img style\="."vertical-align: middle; margin: 10px; src\=imagenes/" .$_FILES['output_imageOpcion2']['name']."/>". PHP_EOL);
+                  }
+
+                  if ( $_POST['opcion3check'] == '1'){
+                    fwrite($archivo, "{=<img style\="."vertical-align: middle; margin: 10px; src\=imagenes/" .$_FILES['output_imageOpcion3']['name']."/>". PHP_EOL);
+                  }else{
+                    fwrite($archivo, "{~<img style\="."vertical-align: middle; margin: 10px; src\=imagenes/" .$_FILES['output_imageOpcion3']['name']."/>". PHP_EOL);
+                  }
+
+                  fwrite($archivo, "}". PHP_EOL);
+              }
+          }
+      }
+      fclose($archivo);
+}
+?>

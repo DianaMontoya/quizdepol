@@ -1,0 +1,12 @@
+El que no socorriere a una persona que se halle desamparada y en peligro manifiesto y grave, cuando pudiere hacerlo sin riesgo propio ni de terceros, será castigado:{
+~prisión de uno a cuatro años
+~con la pena de prisión de seis meses a un año.
+=con la pena de multa de seis a doce meses.
+####EFS
+}
+
+:: CUESTION con IMAGENES ::{
+Cual es el resultado de esta logica?<a href\=imagenes/teen2.png>:</a>
+Diversa
+{=<img style\=vertical-align: middle; margin: 10px; src\=imagenes/teen1.png/>
+}

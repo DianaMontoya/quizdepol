@@ -1,94 +1,240 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
+
   <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js" charset="utf-8"></script>
     <title></title>
-
   </head>
+
   <body>
+    <form method="post" action="submit.php" enctype="multipart/form-data">
 
-    <form method="post" action="submit.php">
-
+        <!--Múltiple opción - 3 preguntas -->
         <div class="form-group fieldGroup">
-          <!--botón para agregar múltiple opción - 3 preguntas -->
-          <div class="input-group-addon">
-              <a href="javascript:void(0)" class="btn btn-success addMore"><span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span> Agregar Múltiple Choice - 3 opciones </a>
+            <!--botón para agregar múltiple opción - 3 preguntas -->
+            <div class="input-group-addon">
+                <a href="javascript:void(0)" class="btn btn-success addMore"><span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span> Agregar Múltiple Choice - 3 opciones </a>
+            </div>
+            <!-- rellenar múltiple opción - 3 preguntas -->
+            <div class="form-group fieldGroupCopy" style="display: none;">
+                <div class="input-group">
+                    <input type="text" type="checkbox" name="pregunta[]" class="form-control" placeholder="Ingrese enunciado de la Pregunta" />
+
+                    <!-- rellenar detalles de opcion 1 -->
+                    <div class="container">
+                      <div class="row">
+                        <div class="col-xs-12 col-md-3">
+                          <div class="form-group">
+                            <label for="OPCION 1"</label>
+                            <div class="input-group">
+                              <input type="text" name="opcion1[]" class="form-control" placeholder="Opcion 1" />
+                              <span class="input-group-addon"><input type="checkbox" name="checkOpcion1" value="1" ></span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- rellenar detalles de opcion 2 -->
+                    <div class="container">
+                      <div class="row">
+                        <div class="col-xs-12 col-md-3">
+                          <div class="form-group">
+                            <label for="OPCION 2"</label>
+                            <div class="input-group">
+                              <input type="text" name="opcion2[]" class="form-control" placeholder="Opcion 2" />
+                              <span class="input-group-addon"><input type="checkbox" name="checkOpcion2" value="1"></span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- rellenar detalles de opcion 3 -->
+                    <div class="container">
+                      <div class="row">
+                        <div class="col-xs-12 col-md-3">
+                          <div class="form-group">
+                            <label for="OPCION 3"</label>
+                            <div class="input-group">
+                              <input type="text" name="opcion3[]" class="form-control" placeholder="Opcion 3" />
+                              <span class="input-group-addon"><input type="checkbox" name="checkOpcion3" value="1"></span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- rellenar retroalimentacion General -->
+                    <input type="text" name="feedback[]" class="form-control" placeholder="Retroalimentacion general" />
+
+                    <!-- boton para borrar pregunta con sus respuestas-->
+                    <div class="input-group-addon">
+                        <a href="javascript:void(0)" class="btn btn-danger remove"><span class="glyphicon glyphicon glyphicon-remove" aria-hidden="true"></span> Borrar</a>
+                    </div>
+                </div>
+            </div>
           </div>
-          <!-- rellenar múltiple opción - 3 preguntas -->
-          <div class="form-group fieldGroupCopy" style="display: none;">
-              <div class="input-group">
-                  <input type="text" name="pregunta[]" class="form-control" placeholder="Ingrese enunciado de la Pregunta"/>
-                  <input type="text" name="opcion1[]" class="form-control" placeholder="Opcion 1"/>
-                  <input type="text" name="opcion2[]" class="form-control" placeholder="Opcion 2"/>
-                  <input type="text" name="opcion3[]" class="form-control" placeholder="Opcion 3"/>
-                  <input type="text" name="answer[]" class="form-control" placeholder="Respuesta Correcta"/>
-                  <input type="text" name="feedback[]" class="form-control" placeholder="Feedback"/>
-                  <div class="input-group-addon">
-                      <a href="javascript:void(0)" class="btn btn-danger remove"><span class="glyphicon glyphicon glyphicon-remove" aria-hidden="true"></span> Borrar</a>
-                  </div>
-              </div>
-          </div>
+
+        <!--Preguntas con Imagenes -->
+        <div class="form-group fieldGroupImage">
+            <!--botón para agregar preguntas con imagenes -->
+            <div class="input-group-addon">
+                <a href="javascript:void(0)" class="btn btn-success addMoreImage"><span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span> Agregar Preguntas con Imagenes </a>
+            </div>
+
+            <!--rellenar preguntas con imagenes -->
+            <div class="form-group fieldGroupImageCopy">
+                <div class="input-group">
+                    <div >
+                      <input type="text" name="preguntaImag[]" class="form-control" placeholder="Ingrese enunciado de la Pregunta" required/>
+                      <div id="wrapper">
+                        <input type="file" name="output_image" accept="image/*" onchange="preview_image(event)" >
+                        <img id="output_image" style="max-width:180px; "/>
+                      </div>
+                    </div>
+
+                    <!-- rellenar detalles de opcion 1 -->
+                    <div class="container">
+                      <div class="row">
+                        <div class="col-xs-12 col-md-3">
+                          <div class="form-group">
+                            <label for="Enunciado Opcion 1"</label>
+                            <div class="input-group">
+                              <input type="text" name="opcion1Imag[]" class="form-control" placeholder="Enunciado Opcion 1"/>
+                              <div id="wrapper">
+                                <input type="file" name="output_imageOpcion1" accept="image/*" onchange="preview_imageOpcion1(event)">
+                                <img id="output_imageOpcion1" style="max-width:180px;"/>
+                              </div>
+                              <span class="input-group-addon"><input type="checkbox" name="opcion1check" id="opcion1check" value="1"></span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- rellenar detalles de opcion 2 -->
+                    <div class="container">
+                      <div class="row">
+                        <div class="col-xs-12 col-md-3">
+                          <div class="form-group">
+                            <label for="Enunciado Opcion 2"</label>
+                            <div class="input-group">
+                              <input type="text" name="opcion2Imag[]" class="form-control" placeholder="Enunciado Opcion 2"/>
+                              <div id="wrapper">
+                                <input type="file" name="output_imageOpcion2" accept="image/*" onchange="preview_imageOpcion2(event)">
+                                <img id="output_imageOpcion2" style="max-width:180px;"/>
+                              </div>
+                              <span class="input-group-addon"><input type="checkbox" name="opcion2check" id="opcion2check" value="1"></span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- rellenar detalles de opcion 3 -->
+                    <div class="container">
+                      <div class="row">
+                        <div class="col-xs-12 col-md-3">
+                          <div class="form-group">
+                            <label for="Enunciado Opcion 3"</label>
+                            <div class="input-group">
+                              <input type="text" name="opcion3Imag[]" class="form-control" placeholder="Enunciado Opcion 3"/>
+                              <div id="wrapper">
+                                <input type="file" name="output_imageOpcion3" accept="image/*" onchange="preview_imageOpcion3(event)">
+                                <img id="output_imageOpcion3" style="max-width:180px;"/>
+                              </div>
+                              <span class="input-group-addon"><input type="checkbox" name="opcion3check" id="opcion3check" value="1"></span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- boton para borrar pregunta con sus respuestas -->
+                    <div class="input-group-addon">
+                        <a href="javascript:void(0)" class="btn btn-danger removeImage"><span class="glyphicon glyphicon glyphicon-remove" aria-hidden="true"></span> Borrar</a>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="form-group fieldGroup4">
-          <!--botón para agregar múltiple opción - 4 preguntas -->
-          <div class="input-group-addon">
-              <a href="javascript:void(0)" class="btn btn-success addMore4"><span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span> Agregar Múltiple Choice - 4 opciones </a>
-          </div>
-          <!-- rellenar múltiple opción - 4 preguntas -->
-          <div class="form-group fieldGroup4Copy" style="display: none;">
-              <div class="input-group">
-                  <input type="text" name="pregunta[]" class="form-control" placeholder="Ingrese enunciado de la Pregunta"/>
-                  <input type="text" name="opcion1[]" class="form-control" placeholder="Opcion 1"/>
-                  <input type="text" name="opcion2[]" class="form-control" placeholder="Opcion 2"/>
-                  <input type="text" name="opcion3[]" class="form-control" placeholder="Opcion 3"/>
-                  <input type="text" name="opcion4[]" class="form-control" placeholder="Opcion 4"/>
-                  <input type="text" name="answer[]" class="form-control" placeholder="Respuesta Correcta"/>
-                  <input type="text" name="feedback[]" class="form-control" placeholder="Feedback"/>
-                  <div class="input-group-addon">
-                      <a href="javascript:void(0)" class="btn btn-danger remove"><span class="glyphicon glyphicon glyphicon-remove" aria-hidden="true"></span> Borrar</a>
-                  </div>
-              </div>
-          </div>
-        </div>
-
-        <input type="submit" name="submit" class="btn btn-primary" value="Enviar Cuestionario"/>
-
+        <input type="submit" name="submit" class="btn btn-primary" value="Exportar a Formato Gift"/>
     </form>
 
+    <script type="text/javascript">
+      $(document).ready(function(){
+          //limites de preguntas
+          var maxGroup = 10;
+
+          //agregar pregunta de 3 opciones
+          $(".addMore").click(function(){
+            if($('body').find('.fieldGroup').length < maxGroup){
+                  var fieldHTML = '<div class="form-group fieldGroup">'+$(".fieldGroupCopy").html()+'</div>';
+                  $('body').find('.fieldGroup:last').after(fieldHTML);
+            }else{
+                  alert('MAXIMO '+maxGroup+' PREGUNTAS PERMITIDAS');
+            }
+          });
+
+          //borrar pregunta de 3 opciones
+          $("body").on("click",".remove",function(){
+              $(this).parents(".fieldGroup").remove();
+          });
 
 
+          //agregar pregunta con imagenes
+          $(".addMoreImage").click(function(){
+            var fieldHTML = '<div class="form-group fieldGroupImage">'+$(".fieldGroupImageCopy").html()+'</div>';
+            $('body').find('.fieldGroupImage:last').after(fieldHTML);
+          });
 
-  <script type="text/javascript">
-    $(document).ready(function(){
-        //limites de preguntas
-        //var maxGroup = 5;
+          //borrar pregunta con imagenes
+          $("body").on("click",".removeImage",function(){
+              $(this).parents(".fieldGroupImage").remove();
+          });
 
-        //agregar pregunta de 3 opciones
-        $(".addMore").click(function(){
-          //  if($('body').find('.fieldGroup').length < maxGroup){
-                var fieldHTML = '<div class="form-group fieldGroup">'+$(".fieldGroupCopy").html()+'</div>';
-                $('body').find('.fieldGroup:last').after(fieldHTML);
-          //  }else{
-          //      alert('MAXIMO '+maxGroup+' PREGUNTAS PERMITIDAS');
-          // }
-        });
-
-        //agregar pregunta de 4 opciones
-        $(".addMore4").click(function(){
-          var fieldHTML = '<div class="form-group fieldGroup4">'+$(".fieldGroup4Copy").html()+'</div>';
-          $('body').find('.fieldGroup4:last').after(fieldHTML);      
-        });
-
-        //borrar pregunta
-        $("body").on("click",".remove",function(){
-            $(this).parents(".fieldGroup").remove();
-        });
+          //agregar preview de imagen seleccionada
+          $("#url").change(function(){
+           var url = $(this).val();
+           $("#imagen").html('<img src="'+ url +'" alt="imagen">');
+         });
     });
-  </script>
+    </script>
 
+    <script type='text/javascript'>
+      // preview imagen de la pregunta
+      function preview_image(event) {
+         var reader = new FileReader();
+         reader.onload = function(){
+            var output = document.getElementById('output_image');
+            output.src = reader.result;
+         }
+         reader.readAsDataURL(event.target.files[0]);
+      }
+
+      // preview imagen de la primer opcion
+      function preview_imageOpcion1(event) {
+         var reader = new FileReader();
+         reader.onload = function(){
+            var output = document.getElementById('output_imageOpcion1');
+            output.src = reader.result;
+         }
+         reader.readAsDataURL(event.target.files[0]);
+      }
+
+      // preview imagen de la segunda opcion
+      function preview_imageOpcion2(event) {
+         var reader = new FileReader();
+         reader.onload = function(){
+            var output = document.getElementById('output_imageOpcion2');
+            output.src = reader.result;
+         }
+         reader.readAsDataURL(event.target.files[0]);
+      }
+    </script>
 
   </body>
 </html>
